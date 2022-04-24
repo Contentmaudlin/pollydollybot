@@ -25,7 +25,7 @@ def meggie():
     exclamationcount = random.randint(2, 5)
 
     meggieStr = "meggi" + ecount * "e" + exclamationcount*"!"
-    if random.rand() < 0.2:
+    if random.random() < 0.2:
         meggieStr += "i love "
         youRand = random.randint(1, 3)
         if youRand == 1:
@@ -47,22 +47,11 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if recentTweets.data is not None:
         for tweet in recentTweets.data:
             id = tweet['id']
+            logging.info('replying to tweet: ' + str(id))
             api.create_tweet(text=meggie(), in_reply_to_tweet_id=id)
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-            logging.info(req_body)
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
-
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+    logging.info('bai!')
+    return func.HttpResponse(
+            "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
+            status_code=200
+    )
