@@ -24,7 +24,18 @@ def meggie():
     ecount = random.randint(1, 4)
     exclamationcount = random.randint(2, 5)
 
-    return "meggi" + ecount * "e" + exclamationcount*"!"
+    meggieStr = "meggi" + ecount * "e" + exclamationcount*"!"
+    if random.rand() < 0.2:
+        meggieStr += "i love "
+        youRand = random.randint(1, 3)
+        if youRand == 1:
+            meggieStr += "youu!"
+        elif youRand == 2:
+            meggieStr += "yu!"
+        elif youRand == 3:
+            meggieStr += "youuu!!!!" 
+    
+    return meggieStr
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
