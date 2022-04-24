@@ -2,6 +2,7 @@ import logging
 import tweepy
 import os
 from datetime import datetime, timezone, timedelta
+import random
 
 import azure.functions as func
 
@@ -19,6 +20,12 @@ api = tweepy.Client(bearer_token=BEARER_TOKEN,
                     consumer_key=CONSUMER_KEY,
                     consumer_secret=CONSUMER_SECRET)
 
+def meggie():
+    ecount = random.randint(1, 4)
+    exclamationcount = random.randint(2, 5)
+
+    return "meggi" + ecount * "e" + exclamationcount*"!"
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     logging.info(user_id)
@@ -28,7 +35,8 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     recentTweets = api.search_recent_tweets(query=queryStr, start_time=threeMinutesAgoDatetime)
     if recentTweets.data is not None:
         for tweet in recentTweets.data:
-            print(tweet)
+            id = tweet['id']
+            api.create_tweet(text=meggie(), in_reply_to_tweet_id=id)
 
     name = req.params.get('name')
     if not name:
